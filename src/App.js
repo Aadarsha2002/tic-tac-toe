@@ -1,10 +1,14 @@
 import { useState } from 'react';
 
-function Square({ value, onSquareClick }) {
+function Square({ value, onSquareClick, isWinningSquare }) {
+  // Conditionally apply the 'winning-square' class if isWinningSquare is true
   return (
-    <button className="square" onClick={onSquareClick}>{value}</button>
+    <button className={`square ${isWinningSquare ? 'winning-square' : ''}`} onClick={onSquareClick}>
+      {value}
+    </button>
   );
 }
+
 
 function Board({ xIsNext, squares, onPlay }) {
   const winner = calculateWinner(squares);
@@ -25,11 +29,20 @@ function Board({ xIsNext, squares, onPlay }) {
     onPlay(nextSquares);
   }
 
+
   let board = [];
   for (let i = 0; i < 3; i++) {
     let row = [];
     for (let j = 0; j < 3; j++) {
-      row.push(<Square value={squares[i * 3 + j]} onSquareClick={() => handleClick(i * 3 + j)} />);
+      const squareIndex = i * 3 + j;
+      const isWinningSquare = winner && winner.includes(squareIndex);
+      row.push(
+        <Square
+          value={squares[squareIndex]}
+          onSquareClick={() => handleClick(squareIndex)}
+          isWinningSquare={isWinningSquare} // Pass the isWinningSquare prop
+        />
+      );
     }
     board.push(<div className="board-row">{row}</div>);
   }
@@ -37,8 +50,7 @@ function Board({ xIsNext, squares, onPlay }) {
     <>
       <div className="status">{status}</div>
       {board}
-    </>
-  );
+    </>);
 
 }
 
