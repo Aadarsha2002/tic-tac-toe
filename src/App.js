@@ -51,7 +51,7 @@ export default function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const currentSquares = history[history.length - 1];
 
-  handlePlay(nextSquares){
+  function handlePlay(nextSquares) {
     setHistory([...history, nextSquares]);  // add nextSquares to history
     setXIsNext(!xIsNext); // toggle
   }
